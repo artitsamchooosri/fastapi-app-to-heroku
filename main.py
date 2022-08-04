@@ -28,7 +28,7 @@ async def callback():
     no_event = len(decoded['events'])
     for i in range(no_event):
         event = decoded['events'][i]
-        await event_handle(event)
+        event_handle(event)
     return '',200
 
 def event_handle(event):
