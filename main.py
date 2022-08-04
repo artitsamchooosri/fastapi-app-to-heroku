@@ -1,3 +1,4 @@
+
 from fastapi import FastAPI
 from linebot.models import (
     MessageEvent, TextMessage, TextSendMessage,TemplateSendMessage,ImageSendMessage, StickerSendMessage, AudioSendMessage, FlexSendMessage
@@ -16,19 +17,21 @@ line_bot_api = LineBotApi(lineaccesstoken)
 
 app = FastAPI()
 
+
 @app.get("/")
 async def hello():
     return {"message":"Hello Mixser"}
 
 @app.route('/webhook', methods=['POST'])
 async def callback():
-    json_line = requests.request.get_json(force=False,cache=False)
-    json_line = json.dumps(json_line)
-    decoded = json.loads(json_line)
+    json_line = await requests.request.get_json(force=False,cache=False)
+    json_line = await json.dumps(json_line)
+    decoded = await json.loads(json_line)
     no_event = len(decoded['events'])
+
     for i in range(no_event):
         event = decoded['events'][i]
-        event_handle(event)
+        await event_handle(event)
     return '',200
 
 def event_handle(event):
